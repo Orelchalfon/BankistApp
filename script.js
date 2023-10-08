@@ -109,7 +109,6 @@ const createUserNamesForEachAccount = accs => {
 }
 createUserNamesForEachAccount(accounts)
 //#endregion
-containerApp.style.opacity = 0
 //                        <--Income-->
 // console.log(accounts);
 const accountBalance = movements => {
