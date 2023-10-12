@@ -60,43 +60,56 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount')
 const inputCloseUsername = document.querySelector('.form__input--user')
 const inputClosePin = document.querySelector('.form__input--pin')
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// LECTURES
-
 const currencies = new Map([
   ['USD', 'United States dollar'],
   ['EUR', 'Euro'],
   ['GBP', 'Pound sterling']
 ])
-//#region AppFunc
-//#region TimerFunctions
-let remainSec = 0.1 * 60
+// const accountMaxTransAction = movements =>
+//   movements.reduce((acc, curr) => (acc > curr ? acc : curr), movements[0])
+// console.log('max ' + accountMaxTransAction(account1.movements))
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+// LECTURES
 
-const Timer = () => {
-  updateTime(remainSec)
-  const interval = setInterval(() => {
-    remainSec--
-    updateTime(remainSec)
-    if (remainSec <= 0) {
-      labelTimer.textContent = '00:00'
-      clearInterval(interval)
-      containerApp.style.opacity = 0
-    }
-  }, 1000)
-}
-const formatTime = sec => {
-  const minutes = Math.floor(sec / 60)
-  const remainSec = sec % 60
-  return `${minutes.toString().padStart(2, '0')}:${remainSec
-    .toString()
-    .padStart(2, '0')}`
-}
-const updateTime = sec => (labelTimer.textContent = formatTime(sec))
+//#region InitialValues
+
 
 //#endregion
-//#region InitalValues
+
+//#region AppFunc
+
+//#region BtnConfigurations
+
+//region LoginBtn
+
+btnLogin.addEventListener('click', e => {
+  e.preventDefault()
+  const currAccount = accounts.find(
+    account => account.userName === inputLoginUsername.value
+  )
+  console.log(currAccount)
+  if (currAccount?.pin !== +inputLoginPin.value)
+    return alert('UserName Or Password is Invalid')
+  labelWelcome.textContent = 'Welcome back,' + currAccount.owner.split(' ')[0]
+  // currAccount.owner.substring(0, currAccount.owner.indexOf(" "));
+  containerApp.style.opacity = '1'
+  const { movements } = currAccount
+
+  accountBalance(movements)
+
+  displayMove(movements)
+
+  summaryDisplay(movements)
+
+  // Timer();
+})
+
+//#endregion
+//#endregion
+//#region initialBtns
 //#region CreateUserNamesForeAccounts
+
 const createUserNamesForEachAccount = accs => {
   accs.forEach(
     acc =>
@@ -107,22 +120,23 @@ const createUserNamesForEachAccount = accs => {
         .toLowerCase())
   )
 }
+
 createUserNamesForEachAccount(accounts)
 //#endregion
-//                        <--Income-->
-// console.log(accounts);
+
+//#endregion
+
+//#region InitFunctions
+
+
+//#region accountBalance
 const accountBalance = movements => {
   const balance = movements.reduce((acc, curr) => acc + curr, 0)
   labelBalance.textContent = balance + ' €'
 }
-
-const accountMaxTransAction = movements =>
-  movements.reduce((acc, curr) => (acc > curr ? acc : curr), movements[0])
-console.log('max ' + accountMaxTransAction(account1.movements))
 //#endregion
 
 //#region MovementsSummaries
-const num = 100.12341
 const summaryDisplay = movements => {
   const income = movements
     .filter(transAction => transAction > 0)
@@ -175,29 +189,38 @@ const displayMove = movements => {
 
 //#endregion
 
+//#region TimerFunctions
+
+const formatTime = sec => {
+  const minutes = Math.floor(sec / 60)
+  const remainSec = sec % 60
+  return `${minutes.toString().padStart(2, '0')}:${remainSec
+    .toString()
+    .padStart(2, '0')}`
+}
+const updateTime = sec => (labelTimer.textContent = formatTime(sec))
+
+let remainSec = 0.1 * 60
+
+const Timer = () => {
+  updateTime(remainSec)
+  const interval = setInterval(() => {
+    remainSec--
+    updateTime(remainSec)
+    if (remainSec <= 0) {
+      labelTimer.textContent = '00:00'
+      clearInterval(interval)
+      containerApp.style.opacity = 0
+    }
+  }, 1000)
+}
+
+//#endregion
 
 
-btnLogin.addEventListener('click', e => {
-  e.preventDefault()
-  const currAccount = accounts.find(
-    account => account.userName === inputLoginUsername.value
-  )
-  console.log(currAccount)
-  if (currAccount?.pin !== +inputLoginPin.value)
-    return alert('UserName Or Password is Invalid')
-  labelWelcome.textContent = 'Welcome back,' + currAccount.owner.split(' ')[0]
-  // currAccount.owner.substring(0, currAccount.owner.indexOf(" "));
-  containerApp.style.opacity = '1'
-  const { movements } = currAccount
 
-  accountBalance(movements)
+//#endregion
 
-  displayMove(movements)
-
-  summaryDisplay(movements)
-
-  // Timer();
-})
 //#endregion
 
 //#region Challenges
@@ -250,3 +273,4 @@ const convertDogsAgeToHumanAge = dogsAge => {
 
 //#endregion
 /////////////////////////////////////////////////
+//#TODO "take care of the other forms !"; 

@@ -87,7 +87,7 @@ nav {
 
 /* MAIN */
 .app {
-  position: relative;
+  position: relative;  
   max-width: 100rem;
   margin: 4rem auto;
   display: grid;
